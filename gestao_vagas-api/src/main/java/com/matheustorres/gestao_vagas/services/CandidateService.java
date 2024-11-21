@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import com.matheustorres.gestao_vagas.models.CandidateModel;
 
-
-
 public interface CandidateService {
 
     Optional<CandidateModel> findByUsernameOrEmail(String username, String email);
 
     void save(CandidateModel candidateModel);
-    
+
+    Optional<CandidateModel> findByUsername(String username);
+
 }

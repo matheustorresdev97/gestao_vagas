@@ -11,7 +11,7 @@ import com.matheustorres.gestao_vagas.services.CandidateService;
 
 @Service
 public class CandidateServiceImpl implements CandidateService {
-    
+
     @Autowired
     private CandidateRepository candidateRepository;
 
@@ -20,9 +20,13 @@ public class CandidateServiceImpl implements CandidateService {
         return candidateRepository.findByUsernameOrEmail(username, email);
     }
 
-
     @Override
     public void save(CandidateModel candidateModel) {
-         candidateRepository.save(candidateModel);
+        candidateRepository.save(candidateModel);
+    }
+
+    @Override
+    public Optional<CandidateModel> findByUsername(String username) {
+        return candidateRepository.findByUsername(username);
     }
 }

@@ -3,6 +3,7 @@ package com.matheustorres.gestao_vagas.controllers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping
     public ResponseEntity<Object> createCandidate(@Valid @RequestBody CandidateRequestDTO candidateRequestDTO) {
         try {
@@ -32,6 +36,8 @@ public class CandidateController {
 
             var candidateModel = new CandidateModel();
             BeanUtils.copyProperties(candidateRequestDTO, candidateModel);
+            var password = passwordEncoder.encode(candidateModel.getPassword());
+            candidateModel.setPassword(password);
             candidateService.save(candidateModel);
 
             return ResponseEntity.ok().body(candidateModel);

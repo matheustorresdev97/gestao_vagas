@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +33,7 @@ public class CandidateModel {
     @Email(message = "O campo [email] deve conter um e-mail válido")
     private String email;
 
+    @JsonIgnore
     @Length(min = 10, max = 100, message = "A senha deve conter entre (10) e (100) caracteres")
     private String password;
     private String description;

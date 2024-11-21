@@ -9,4 +9,6 @@ import com.matheustorres.gestao_vagas.models.CandidateModel;
 
 public interface CandidateRepository extends JpaRepository<CandidateModel, UUID> {
     Optional<CandidateModel> findByUsernameOrEmail(String username, String email);
+
+    Optional<CandidateModel> findByUsername(String username);
 }
