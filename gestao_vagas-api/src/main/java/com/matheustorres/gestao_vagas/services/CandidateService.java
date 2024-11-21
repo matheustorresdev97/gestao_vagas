@@ -10,6 +10,6 @@ public interface CandidateService {
 
     Optional<CandidateModel> findByUsernameOrEmail(String username, String email);
 
-    Object save(CandidateModel candidateModel);
+    void save(CandidateModel candidateModel);
     
 }

@@ -22,7 +22,7 @@ public class CandidateServiceImpl implements CandidateService {
 
 
     @Override
-    public Object save(CandidateModel candidateModel) {
-        return candidateRepository.save(candidateModel);
+    public void save(CandidateModel candidateModel) {
+         candidateRepository.save(candidateModel);
     }
 }
