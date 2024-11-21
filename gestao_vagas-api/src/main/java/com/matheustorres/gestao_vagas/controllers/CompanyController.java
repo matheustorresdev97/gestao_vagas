@@ -3,6 +3,7 @@ package com.matheustorres.gestao_vagas.controllers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping
     public ResponseEntity<Object> createCompany(@Valid @RequestBody CompanyRequestDTO companyRequestDTO) {
         try {
@@ -32,6 +36,8 @@ public class CompanyController {
 
             var companyModel = new CompanyModel();
             BeanUtils.copyProperties(companyRequestDTO, companyModel);
+            var password = passwordEncoder.encode(companyModel.getPassword());
+            companyModel.setPassword(password);
             companyService.save(companyModel);
 
             return ResponseEntity.ok().body(companyModel);

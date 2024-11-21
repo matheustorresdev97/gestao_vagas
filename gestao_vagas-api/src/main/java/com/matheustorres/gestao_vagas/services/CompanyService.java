@@ -9,5 +9,7 @@ public interface CompanyService {
     Optional<CompanyModel> findByUsernameOrEmail(String username, String email);
 
     void save(CompanyModel companyModel);
+
+    Optional<CompanyModel> findByUsername(String username);
     
 }

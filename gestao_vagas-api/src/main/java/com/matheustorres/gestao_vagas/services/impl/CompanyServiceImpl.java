@@ -23,4 +23,9 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.save(companyModel);
     }
 
+    @Override
+    public Optional<CompanyModel> findByUsername(String username) {
+      return companyRepository.findByUsername(username);
+    }
+
 }
