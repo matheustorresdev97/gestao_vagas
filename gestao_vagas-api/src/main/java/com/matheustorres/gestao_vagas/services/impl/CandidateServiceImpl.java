@@ -1,5 +1,7 @@
 package com.matheustorres.gestao_vagas.services.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,13 @@ public class CandidateServiceImpl implements CandidateService {
     private CandidateRepository candidateRepository;
 
     @Override
-    public CandidateModel save(CandidateModel candidateModel) {
-       return candidateRepository.save(candidateModel);
+    public Optional<CandidateModel> findByUsernameOrEmail(String username, String email) {
+        return candidateRepository.findByUsernameOrEmail(username, email);
+    }
+
+
+    @Override
+    public Object save(CandidateModel candidateModel) {
+        return candidateRepository.save(candidateModel);
     }
 }

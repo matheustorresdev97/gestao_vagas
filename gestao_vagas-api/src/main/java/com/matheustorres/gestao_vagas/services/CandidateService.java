@@ -1,11 +1,15 @@
 package com.matheustorres.gestao_vagas.services;
 
+import java.util.Optional;
+
 import com.matheustorres.gestao_vagas.models.CandidateModel;
 
-import jakarta.validation.Valid;
+
 
 public interface CandidateService {
 
-    CandidateModel save(CandidateModel candidateModel);
+    Optional<CandidateModel> findByUsernameOrEmail(String username, String email);
+
+    Object save(CandidateModel candidateModel);
     
 }
