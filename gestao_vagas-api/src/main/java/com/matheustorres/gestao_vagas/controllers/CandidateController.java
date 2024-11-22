@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +55,7 @@ public class CandidateController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('CANDIDATE')")
     public ResponseEntity<Object> getCandidate(HttpServletRequest request) {
         var idCandidate = request.getAttribute("candidate_id");
 
@@ -63,12 +65,12 @@ public class CandidateController {
             });
 
             var candidateDTO = ProfileCandidateResponseDTO.builder()
-            .description(candidate.getDescription())
-            .username(candidate.getUsername())
-            .email(candidate.getEmail())
-            .name(candidate.getName())
-            .id(candidate.getId())
-            .build();
+                    .description(candidate.getDescription())
+                    .username(candidate.getUsername())
+                    .email(candidate.getEmail())
+                    .name(candidate.getName())
+                    .id(candidate.getId())
+                    .build();
 
             return ResponseEntity.ok().body(candidateDTO);
 
