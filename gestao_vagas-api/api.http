@@ -1,0 +1,59 @@
+### Criar Candidate
+POST http://localhost:8080/candidate
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "username": "johndoe",
+  "email": "john.doe@example.com",
+  "password": "securepassword123",
+  "description": "Experienced software engineer",
+  "curriculum": "https://example.com/curriculum/johndoe"
+}
+
+### Criar Company
+POST http://localhost:8080/company
+Content-Type: application/json
+
+{
+  "username": "techcompany",
+  "email": "contact@techcompany.com",
+  "password": "securepassword123",
+  "website": "https://www.techcompany.com",
+  "name": "Tech Company",
+  "description": "Innovative tech solutions provider"
+}
+
+### Autenticar Candidate e Obter JWT
+POST http://localhost:8080/candidate/auth
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "password": "securepassword123"
+}
+
+### Autenticar Company e Obter JWT
+POST http://localhost:8080/company/auth
+Content-Type: application/json
+
+{
+  "username": "techcompany",
+  "password": "securepassword123"
+}
+
+### Criar Vaga com Autenticação da Company
+POST http://localhost:8080/company/job
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJqYXZhZ2FzIiwiZXhwIjoxNzMyMjkwODE1LCJzdWIiOiJkMTI4ZjAyYy1hNTE3LTRkMDctYWQ4Ni02MzJkOWY2OGE5ZDYiLCJyb2xlcyI6WyJDT01QQU5ZIl19.v0RhNDb6sl8alnUxD66p6bPcM1ujHaw_-jEiyfIP2lE
+
+{
+  "description": "Desenvolvimento de aplicações web com Spring Boot",
+  "benefits": "Plano de saúde, vale-refeição, home office",
+  "level": "Júnior"
+}
+
+### Buscar Candidato
+GET http://localhost:8080/candidate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJqYXZhZ2FzIiwic3ViIjoiODRlOTc3ZjEtZTc5MC00Zjk2LTg3OGItNDE1NDIxYmI5NWMxIiwicm9sZXMiOlsiQ0FORElEQVRFIl0sImV4cCI6MTczMjI5MDc1M30.4MWanYuPoAp9-61_MA6VEWaPXKaT_tCfZKOX6Q5xEB0

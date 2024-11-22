@@ -18,39 +18,38 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTProvider jwtProvider;
+  @Autowired
+  private JWTProvider jwtProvider;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        // SecurityContextHolder.getContext().setAuthentication(null);
-        String header = request.getHeader("Authorization");
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    // SecurityContextHolder.getContext().setAuthentication(null);
+    String header = request.getHeader("Authorization");
 
-        if (request.getRequestURI().startsWith("/company")) {
-            if (header != null) {
-                var token = this.jwtProvider.validateToken(header);
-                if (token == null) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
-
-                var roles = token.getClaim("roles").asList(Object.class);
-
-                var grants = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase()))
-                        .toList();
-
-                request.setAttribute("company_id", token.getSubject());
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(token.getSubject(),
-                        null,
-                        grants);
-
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
+    if (request.getRequestURI().startsWith("/company")) {
+      if (header != null) {
+        var token = this.jwtProvider.validateToken(header);
+        if (token == null) {
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          return;
         }
 
-        filterChain.doFilter(request, response);
+        var roles = token.getClaim("roles").asList(Object.class);
+
+        var grants = roles.stream()
+            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase()))
+            .toList();
+
+        request.setAttribute("company_id", token.getSubject());
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(token.getSubject(), null,
+            grants);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+      }
     }
+
+    filterChain.doFilter(request, response);
+  }
 
 }

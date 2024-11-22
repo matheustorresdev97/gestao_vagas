@@ -24,7 +24,7 @@ import com.matheustorres.gestao_vagas.dtos.AuthCompanyResponseDTO;
 import com.matheustorres.gestao_vagas.services.CompanyService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/company")
 public class AuthCompanyController {
 
     @Autowired
@@ -36,14 +36,14 @@ public class AuthCompanyController {
     @Value("${security.token.secret}")
     private String secretKey;
 
-    @PostMapping("/company")
+    @PostMapping("/auth")
     public ResponseEntity<Object> createCompanyAuth(@RequestBody AuthCompanyRequestDTO authCompanyRequestDTO) {
         try {
             var company = companyService.findByUsername(authCompanyRequestDTO.username()).orElseThrow(() -> {
                 throw new UsernameNotFoundException("Username/password incorrect");
             });
 
-            var passwordMatches = this.passwordEncoder.matches(authCompanyRequestDTO.password(), company.getPassword());
+            var passwordMatches = passwordEncoder.matches(authCompanyRequestDTO.password(), company.getPassword());
 
             if (!passwordMatches) {
                 throw new AuthenticationException();
@@ -54,15 +54,14 @@ public class AuthCompanyController {
             var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
 
             var token = JWT.create().withIssuer("javagas")
-                    .withExpiresAt(expiresIn)
-                    .withSubject(company.getId().toString())
-                    .withClaim("roles", Arrays.asList("COMPANY"))
-                    .sign(algorithm);
+            .withExpiresAt(expiresIn)
+            .withSubject(company.getId().toString())
+            .withClaim("roles", Arrays.asList("COMPANY"))
+            .sign(algorithm);
 
-            var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
-                    .access_token(token)
-                    .expires_in(expiresIn.toEpochMilli())
-                    .build();
+            var authCompanyResponseDTO = new AuthCompanyResponseDTO();
+            authCompanyResponseDTO.setAccess_token(token);
+            authCompanyResponseDTO.setExpires_in(expiresIn.toEpochMilli());
 
             return ResponseEntity.ok().body(authCompanyResponseDTO);
         } catch (Exception e) {

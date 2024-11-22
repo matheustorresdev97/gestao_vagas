@@ -1,11 +1,13 @@
 package com.matheustorres.gestao_vagas.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.matheustorres.gestao_vagas.models.JobModel;
 import com.matheustorres.gestao_vagas.repositories.JobRepository;
 import com.matheustorres.gestao_vagas.services.JobService;
 
+@Service
 public class JobServiceImpl implements JobService {
 
     @Autowired

@@ -24,7 +24,7 @@ import com.matheustorres.gestao_vagas.dtos.AuthCandidateResponseDTO;
 import com.matheustorres.gestao_vagas.services.CandidateService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/candidate")
 public class AuthCandidateController {
 
     @Autowired
@@ -36,14 +36,14 @@ public class AuthCandidateController {
     @Value("${security.token.secret.candidate}")
     private String secretKey;
 
-    @PostMapping("/candidate")
-    public ResponseEntity<Object> authCandidate(@RequestBody AuthCandidateRequestDTO authCandidateRequestDTO) {
+    @PostMapping("/auth")
+    public ResponseEntity<Object> auth(@RequestBody AuthCandidateRequestDTO authCandidateRequestDTO) {
         try {
             var candidate = candidateService.findByUsername(authCandidateRequestDTO.username()).orElseThrow(() -> {
                 throw new UsernameNotFoundException("Username/password incorrect");
             });
 
-            var passwordMatches = this.passwordEncoder
+            var passwordMatches = passwordEncoder
                     .matches(authCandidateRequestDTO.password(), candidate.getPassword());
 
             if (!passwordMatches) {
@@ -52,11 +52,12 @@ public class AuthCandidateController {
 
             Algorithm algorithm = Algorithm.HMAC256(secretKey);
             var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
+
             var token = JWT.create()
                     .withIssuer("javagas")
                     .withSubject(candidate.getId().toString())
                     .withClaim("roles", Arrays.asList("CANDIDATE"))
-                    .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
+                    .withExpiresAt(expiresIn)
                     .sign(algorithm);
 
             var AuthCandidateResponse = new AuthCandidateResponseDTO();

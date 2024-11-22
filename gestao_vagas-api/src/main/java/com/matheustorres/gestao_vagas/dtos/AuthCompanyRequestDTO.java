@@ -1,5 +1,5 @@
 package com.matheustorres.gestao_vagas.dtos;
 
-public record AuthCompanyRequestDTO(String password, String username) {
+public record AuthCompanyRequestDTO(String username, String password) {
 
 }
