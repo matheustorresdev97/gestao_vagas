@@ -1,6 +1,7 @@
 package com.matheustorres.gestao_vagas.services.impl;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,10 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public Optional<CandidateModel> findByUsername(String username) {
         return candidateRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<CandidateModel> findById(UUID idCandidate) {
+        return candidateRepository.findById(idCandidate);
     }
 }
