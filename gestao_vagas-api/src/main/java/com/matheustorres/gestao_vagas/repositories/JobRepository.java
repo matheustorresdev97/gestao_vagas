@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.matheustorres.gestao_vagas.models.JobModel;
 
 public interface JobRepository extends JpaRepository<JobModel, UUID> {
-    List<JobModel> findByDescriptionContaining(String title);
+    List<JobModel> findByDescriptionContainingIgnoreCase(String title);
 }

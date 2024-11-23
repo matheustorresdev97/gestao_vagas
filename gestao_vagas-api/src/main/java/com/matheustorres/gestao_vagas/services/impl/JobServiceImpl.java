@@ -22,6 +22,6 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobModel> listAllJobsByFilterUseCase(String filter) {
-        return jobRepository.findByDescriptionContaining(filter);
+        return jobRepository.findByDescriptionContainingIgnoreCase(filter);
     }
 }
