@@ -1,5 +1,7 @@
 package com.matheustorres.gestao_vagas.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,10 @@ public class JobServiceImpl implements JobService {
     @Override
     public void save(JobModel jobModel) {
         jobRepository.save(jobModel);
+    }
+
+    @Override
+    public List<JobModel> listAllJobsByFilterUseCase(String filter) {
+        return jobRepository.findByDescriptionContaining(filter);
     }
 }

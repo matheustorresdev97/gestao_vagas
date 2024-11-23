@@ -1,5 +1,6 @@
 package com.matheustorres.gestao_vagas.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -12,13 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.matheustorres.gestao_vagas.dtos.CandidateRequestDTO;
 import com.matheustorres.gestao_vagas.dtos.ProfileCandidateResponseDTO;
 import com.matheustorres.gestao_vagas.exceptions.UserFoundException;
 import com.matheustorres.gestao_vagas.models.CandidateModel;
+import com.matheustorres.gestao_vagas.models.JobModel;
 import com.matheustorres.gestao_vagas.services.CandidateService;
+import com.matheustorres.gestao_vagas.services.JobService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -29,6 +33,9 @@ public class CandidateController {
 
     @Autowired
     private CandidateService candidateService;
+
+    @Autowired
+    private JobService jobService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,4 +85,10 @@ public class CandidateController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/job")
+    @PreAuthorize("hasRole('CANDIDATE')")
+      public List<JobModel> findJobByFilter(@RequestParam String filter) {
+        return jobService.listAllJobsByFilterUseCase(filter);
+      }
 }
